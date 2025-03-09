@@ -22,86 +22,107 @@ public sealed class PacketHandler : PhotonParser
         {
             ReceivePacket(packet.PayloadData);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            //MainForm.Log(ex.ToString());
+            MainForm.Log($"Packet handling error: {ex.Message}");
         }
     }
 
     protected override void OnEvent(byte code, Dictionary<byte, object> parameters)
     {
-        if (code == 3)
+        try 
         {
-            parameters.Add(252, (short)EventCodes.Move);
-            byte[] bytes = (byte[])parameters[1];
+            if (code == 3)
+            {
+                parameters.Add(252, (short)EventCodes.Move);
+                byte[] bytes = (byte[])parameters[1];
 
-            parameters.Add(4, BitConverter.ToSingle(bytes, 9));
-            parameters.Add(5, BitConverter.ToSingle(bytes, 13));
+                parameters.Add(4, BitConverter.ToSingle(bytes, 9));
+                parameters.Add(5, BitConverter.ToSingle(bytes, 13));
+            }
+
+            short codeID = parameters.TryGetValue(252, out var codeObj) ? (short)codeObj : (short)0;
+
+            if (codeID == 0)
+                return;
+
+            EventCodes eventCode = (EventCodes)codeID;
+
+            switch (eventCode)
+            {
+                case EventCodes.Leave:
+                    HandleLeave(parameters);
+                    break;
+                case EventCodes.Move:
+                    HandlePlayerMovement(parameters);
+                    break;
+                case EventCodes.NewCharacter:
+                    HandleNewPlayerEvent(parameters);
+                    break;
+                case EventCodes.NewSimpleHarvestableObjectList:
+                    HandleNewSimpleHarvestableObjectList(parameters);
+                    break;
+                case EventCodes.NewHarvestableObject:
+                    HandleNewHarvestableObject(parameters);
+                    break;
+                case EventCodes.HarvestableChangeState:
+                    HandleHarvestableChangeState(parameters);
+                    break;
+                case EventCodes.HarvestFinished:
+                    //HandleHarvestFinished(parameters);
+                    break;
+                case EventCodes.MobChangeState:
+                    HandleMobChangeState(parameters);
+                    break;
+                case EventCodes.NewMob:
+                    HandleNewMob(parameters);
+                    break;
+                case EventCodes.JoinFinished:
+                    HandleJoinFinished();
+                    break;
+            }
         }
-
-        short codeID = parameters.TryGetValue(252, out var codeObj) ? (short)codeObj : (short)0;
-
-        if (codeID == 0)
-            return;
-
-        EventCodes eventCode = (EventCodes)codeID;
-
-        switch (eventCode)
+        catch (Exception ex)
         {
-            case EventCodes.Leave:
-                HandleLeave(parameters);
-                break;
-            case EventCodes.Move:
-                HandlePlayerMovement(parameters);
-                break;
-            case EventCodes.NewCharacter:
-                HandleNewPlayerEvent(parameters);
-                break;
-            case EventCodes.NewSimpleHarvestableObjectList:
-                HandleNewSimpleHarvestableObjectList(parameters);
-                break;
-            case EventCodes.NewHarvestableObject:
-                HandleNewHarvestableObject(parameters);
-                break;
-            case EventCodes.HarvestableChangeState:
-                HandleHarvestableChangeState(parameters);
-                break;
-            case EventCodes.HarvestFinished:
-                //HandleHarvestFinished(parameters);
-                break;
-            case EventCodes.MobChangeState:
-                HandleMobChangeState(parameters);
-                break;
-            case EventCodes.NewMob:
-                HandleNewMob(parameters);
-                break;
-            case EventCodes.JoinFinished:
-                HandleJoinFinished();
-                break;
+            MainForm.Log($"Event handling error: {ex.Message}");
         }
     }
 
     protected override void OnRequest(byte operationCode, Dictionary<byte, object> parameters)
     {
-        OperationCodes code = parameters.TryGetValue(253, out var codeObj) ? (OperationCodes)Convert.ToInt16(codeObj) : 0;
-
-        switch (code)
+        try
         {
-            case OperationCodes.Move:
-                HandleLocalPlayerMovement(parameters);
-                break;
+            OperationCodes code = parameters.TryGetValue(253, out var codeObj) ? (OperationCodes)Convert.ToInt16(codeObj) : 0;
+
+            switch (code)
+            {
+                case OperationCodes.Move:
+                    HandleLocalPlayerMovement(parameters);
+                    break;
+            }
+        }
+        catch (Exception ex)
+        {
+            MainForm.Log($"Request handling error: {ex.Message}");
         }
     }
 
     protected override void OnResponse(byte OperationCode, short ReturnCode, string DebugMessage, Dictionary<byte, object> parameters)
     {
-        OperationCodes code = parameters.TryGetValue(253, out var codeObj) ? (OperationCodes)Convert.ToInt16(codeObj) : 0;
-
-        switch (code)
+        try
         {
-            case OperationCodes.Join:
-                HandleJoinOperation(parameters);
-                break;
+            OperationCodes code = parameters.TryGetValue(253, out var codeObj) ? (OperationCodes)Convert.ToInt16(codeObj) : 0;
+
+            switch (code)
+            {
+                case OperationCodes.Join:
+                    HandleJoinOperation(parameters);
+                    break;
+            }
+        }
+        catch (Exception ex)
+        {
+            MainForm.Log($"Response handling error: {ex.Message}");
         }
     }
 
@@ -113,10 +134,11 @@ public sealed class PacketHandler : PhotonParser
             byte enchantmentLevel = Convert.ToByte(parameters[1]);
 
             MobsHandler.UpdateMobEnchantmentLevel(mobId, enchantmentLevel);
+            MainForm.Log($"Mob state changed - ID: {mobId}, Enchant: {enchantmentLevel}");
         }
         catch (Exception e)
         {
-            Console.WriteLine($@"HandleMobChangeState: {e}");
+            MainForm.Log($"HandleMobChangeState error: {e.Message}");
         }
     }
 
@@ -127,10 +149,11 @@ public sealed class PacketHandler : PhotonParser
             HarvestableHandler.Reset();
             MobsHandler.Reset();
             PlayerHandler.Reset();
+            MainForm.Log("Join finished - Handlers reset");
         }
         catch (Exception e)
         {
-            MainForm.Log($"HandleJoinFinished: {e}");
+            MainForm.Log($"HandleJoinFinished error: {e.Message}");
         }
     }
 
@@ -140,62 +163,16 @@ public sealed class PacketHandler : PhotonParser
         {
             int id = Convert.ToInt32(parameters[0]);
             int typeId = Convert.ToInt32(parameters[1]);
-
             float[] loc = (float[])parameters[7];
             float posX = loc[0];
             float posY = loc[1];
-
             int health = parameters.TryGetValue(13, out object healthObj) ? Convert.ToInt32(healthObj) : 0;
-
-            // Debug için tüm parametreleri logla
-            string debugInfo = $"New Mob:\n";
-            debugInfo += $"ID: {id}, TypeID: {typeId}, Health: {health}\n";
-            debugInfo += $"Position: X={posX}, Y={posY}\n";
-            
-            var mobInfo = AlbionRadar.Mobs.MobInfo.GetMobInfo(typeId);
-            if (mobInfo != null)
-            {
-                debugInfo += $"MobInfo: Tier={mobInfo.Tier}, Type={mobInfo.MobType}, HarvestableType={mobInfo.HarvestableMobType}\n";
-            }
-            else
-            {
-                debugInfo += "MobInfo: null\n";
-            }
-            
-            debugInfo += "PARAMETERS:\n";
-            
-            foreach (var param in parameters)
-            {
-                if (param.Value != null)
-                {
-                    if (param.Value.GetType().IsArray)
-                    {
-                        var arr = param.Value as Array;
-                        string arrayValues = "[ ";
-                        if (arr != null)
-                        {
-                            foreach (var item in arr)
-                            {
-                                arrayValues += item + " ";
-                            }
-                        }
-                        arrayValues += "]";
-                        debugInfo += $"Key = {param.Key}, Value = {arrayValues}, Type = {param.Value.GetType()}\n";
-                    }
-                    else
-                    {
-                        debugInfo += $"Key = {param.Key}, Value = {param.Value}, Type = {param.Value.GetType()}\n";
-                    }
-                }
-            }
-
-            MainForm.Log(debugInfo);
 
             MobsHandler.AddMob(id, typeId, posX, posY, health);
         }
         catch (Exception e)
         {
-            MainForm.Log($"HandleNewMob Error: {e}");
+            MainForm.Log($"HandleNewMob Error: {e.Message}");
         }
     }
 

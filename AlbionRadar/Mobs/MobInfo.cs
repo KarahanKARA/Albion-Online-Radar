@@ -10,14 +10,20 @@ public sealed class MobInfo
     [
         // HARVESTABLE MOBS
         new(48, 3, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T3 Fiber
+        new(1220, 4, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T4 Fiber
+        new(1230, 4, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T4 Fiber
         new(49, 5, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T5 Fiber
-        new(50, 7, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T7 Fiber
+        new(1240, 6, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T6 Fiber
         new(51, 6, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T6 Fiber
+        new(50, 7, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T7 Fiber
 
         new(52, 3, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T3 Hide
+        new(1201, 4, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T4 Hide
+        new(1202, 4, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T4 Hide
         new(53, 5, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T5 Hide
-        new(54, 7, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T7 Hide
+        new(1203, 5, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T5 Hide
         new(55, 6, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T6 Hide
+        new(54, 7, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T7 Hide
 
         new(56, 3, MobType.HARVESTABLE, HarvestableMobType.ORE), // T3 Ore
         new(57, 3, MobType.HARVESTABLE, HarvestableMobType.ORE), // T3 Ore
