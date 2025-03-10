@@ -260,6 +260,7 @@ partial class SettingForm
         mistCheckbox = new System.Windows.Forms.CheckBox();
         dynamicGatherCheckbox = new System.Windows.Forms.CheckBox();
         staticGatherCheckbox = new System.Windows.Forms.CheckBox();
+        button1 = new System.Windows.Forms.Button();
         gbOffset.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)nRadarY).BeginInit();
         ((System.ComponentModel.ISupportInitialize)nRadarX).BeginInit();
@@ -3077,11 +3078,22 @@ partial class SettingForm
         staticGatherCheckbox.Text = "Show Static Gather Points";
         staticGatherCheckbox.UseVisualStyleBackColor = true;
         // 
+        // button1
+        // 
+        button1.Location = new System.Drawing.Point(681, 287);
+        button1.Name = "button1";
+        button1.Size = new System.Drawing.Size(75, 23);
+        button1.TabIndex = 5;
+        button1.Text = "button1";
+        button1.UseVisualStyleBackColor = true;
+        button1.Click += button1_Click;
+        // 
         // SettingForm
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
         ClientSize = new System.Drawing.Size(768, 322);
+        Controls.Add(button1);
         Controls.Add(groupBox2);
         Controls.Add(gbResources);
         Controls.Add(gbRadar);
@@ -3354,4 +3366,5 @@ partial class SettingForm
     private System.Windows.Forms.CheckBox mistCheckbox;
     private System.Windows.Forms.CheckBox dynamicGatherCheckbox;
     private System.Windows.Forms.CheckBox staticGatherCheckbox;
+    private System.Windows.Forms.Button button1;
 }

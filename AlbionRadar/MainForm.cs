@@ -139,7 +139,6 @@ public partial class MainForm : Form
         {
             lock (LogFileLock)
             {
-                // Sadece hata ve kritik sistem mesajlarını dosyaya yaz
                 if (message.Contains("Error") || message.Contains("Exception") ||
                     message.Contains("Starting") || message.Contains("Initialization"))
                 {

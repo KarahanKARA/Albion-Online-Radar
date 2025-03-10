@@ -364,24 +364,24 @@ public partial class SettingForm : Form
         if (!CanChangeSettings)
             return;
 
-        // Timer'ı yeniden başlat
         iconSizeTimer.Stop();
         iconSizeTimer.Start();
     }
 
-    private void btnResetConfig_Click(object sender, EventArgs e)
+
+    private void button1_Click(object sender, EventArgs e)
     {
         if (MessageBox.Show(
-            "Tüm ayarları sıfırlamak istediğinize emin misiniz?",
-            "Ayarları Sıfırla",
-            MessageBoxButtons.YesNo,
-            MessageBoxIcon.Warning) == DialogResult.Yes)
+           "Reset Setting?",
+           "Reset",
+           MessageBoxButtons.YesNo,
+           MessageBoxIcon.Warning) == DialogResult.Yes)
         {
             CanChangeSettings = false;
             Config.ResetConfig();
             MessageBox.Show(
-                "Ayarlar sıfırlandı. Program yeniden başlatılacak.",
-                "Bilgi",
+                "Settings have been reset. The program will be restarted.",
+                "Info",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
             Application.Restart();
