@@ -11,9 +11,4 @@ public sealed class Mob(int id, int typeId, float posX, float posY, int health, 
     public int Health { get; } = health;
     public byte EnchantmentLevel { get; set; } = enchantmentLevel;
     public MobInfo MobInfo { get; } = MobInfo.GetMobInfo(typeId);
-
-    public override string ToString()
-    {
-        return $"MobData: ID={ID}, TypeID={TypeId}";
-    }
 }

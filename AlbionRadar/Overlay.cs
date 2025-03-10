@@ -203,6 +203,29 @@ public sealed class Overlay : DirectXOverlayPlugin
             if (Math.Abs(mobX) > maxAllowedCoordinate || Math.Abs(mobY) > maxAllowedCoordinate)
                 continue;
 
+            if (mob.TypeId == 407 && mob.Health == 20)
+                continue;
+
+            if (mob.TypeId == 441)
+                continue;
+
+            if (mob.TypeId == 1220)
+            {
+                DrawFilledCircle(OverlayWindow.Graphics, new Vector2(mobX, mobY), 7, _redBrush);
+                continue;
+            }
+
+            if (mob.TypeId == 92 || mob.TypeId == 87)
+            {
+                if (!Config.Instance.Display.ShowMists)
+                    continue;
+
+                DrawFilledCircle(OverlayWindow.Graphics, new Vector2(mobX, mobY), 7, _yellowBrush);
+                string mistType = mob.TypeId == 92 ? "DUO" : "SOLO";
+                DrawText(OverlayWindow.Graphics, $"MIST {mistType} T{mob.MobInfo?.Tier ?? 0}", new Vector2(mobX, mobY), _yellowBrush);
+                continue;
+            }
+
             if (mob.MobInfo != null && mob.MobInfo.MobType == MobType.HARVESTABLE)
             {
                 if (!Config.Instance.Display.ShowDynamicGather)
@@ -212,6 +235,18 @@ public sealed class Overlay : DirectXOverlayPlugin
                 int tier = mob.MobInfo.Tier;
                 int enchant = mob.EnchantmentLevel;
                 
+                if (mob.TypeId == 1230)
+                {
+                    DrawFilledCircle(OverlayWindow.Graphics, new Vector2(mobX, mobY), 7, _redBrush);
+                    continue;
+                }
+
+                if (mob.TypeId == 1240)
+                {
+                    DrawFilledCircle(OverlayWindow.Graphics, new Vector2(mobX, mobY), 7, _redBrush);
+                    continue;
+                }
+
                 if (!Config.Instance.CanShowHarvestableMob(mob.MobInfo.HarvestableMobType, (byte)tier, (byte)enchant))
                     continue;
 
@@ -237,34 +272,17 @@ public sealed class Overlay : DirectXOverlayPlugin
                 if (!string.IsNullOrEmpty(iconName))
                 {
                     DrawIcon(OverlayWindow.Graphics, iconName, new Vector2(mobX, mobY));
-                    if (mob.Health > 0)
-                    {
-                        string hpText = $"HP: {mob.Health}";
-                        int fontId = OverlayWindow.Graphics.CreateFont("Arial", 12);
-                        OverlayWindow.Graphics.DrawText(
-                            hpText,
-                            fontId,
-                            _textBrush,
-                            (int)(mobX - 15),
-                            (int)(mobY + 15)
-                        );
-                    }
+                    string hpText = $"HP: {mob.Health}";
+                    int fontId2 = OverlayWindow.Graphics.CreateFont("Arial", 12);
+                    OverlayWindow.Graphics.DrawText(
+                        hpText,
+                        fontId2,
+                        _textBrush,
+                        (int)(mobX - 15),
+                        (int)(mobY + 15)
+                    );
                     continue;
                 }
-            }
-
-            if (mob.TypeId == 407 && mob.Health == 20)
-                continue;
-
-            if (mob.TypeId == 92 || mob.TypeId == 87)
-            {
-                if (!Config.Instance.Display.ShowMists)
-                    continue;
-
-                DrawFilledCircle(OverlayWindow.Graphics, new Vector2(mobX, mobY), 7, _yellowBrush);
-                string mistType = mob.TypeId == 92 ? "DUO" : "SOLO";
-                DrawText(OverlayWindow.Graphics, $"MIST {mistType} T{mob.MobInfo?.Tier ?? 0}", new Vector2(mobX, mobY), _yellowBrush);
-                continue;
             }
 
             if (!Config.Instance.Display.ShowMobs)
@@ -361,6 +379,10 @@ public sealed class Overlay : DirectXOverlayPlugin
                 float iconX = position.X - width / 2;
                 float iconY = position.Y - height / 2;
                 graphics.DrawBitmap(iconX, iconY, icon, scale, BitmapInterpolationMode.Linear);
+            }
+            else
+            {
+                MainForm.Log($"Icon not found: {iconName}");
             }
         }
         catch (Exception e)

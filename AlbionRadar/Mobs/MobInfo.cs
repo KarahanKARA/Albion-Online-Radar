@@ -23,6 +23,7 @@ public sealed class MobInfo
         new(790, 5, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T5 Fiber
         new(1240, 5, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T5 Fiber
         new(89885, 5, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T5 Fiber
+        new(86813, 5, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T5 Fiber
         new(51, 6, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T6 Fiber
         new(519, 6, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T6 Fiber
         new(521, 6, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T6 Fiber Enhanced
@@ -41,8 +42,12 @@ public sealed class MobInfo
 
         new(56, 3, MobType.HARVESTABLE, HarvestableMobType.ORE), // T3 Ore
         new(57, 3, MobType.HARVESTABLE, HarvestableMobType.ORE), // T3 Ore
+        new(534, 4, MobType.HARVESTABLE, HarvestableMobType.ORE), // T4 Ore
+        new(535, 4, MobType.HARVESTABLE, HarvestableMobType.ORE), // T4 Ore
         new(58, 5, MobType.HARVESTABLE, HarvestableMobType.ORE), // T5 Ore
         new(59, 5, MobType.HARVESTABLE, HarvestableMobType.ORE), // T5 Ore
+        new(537, 5, MobType.HARVESTABLE, HarvestableMobType.ORE), // T5 Ore
+        new(796, 6, MobType.HARVESTABLE, HarvestableMobType.ORE), // T6 Ore
         new(60, 7, MobType.HARVESTABLE, HarvestableMobType.ORE), // T7 Ore
         new(61, 6, MobType.HARVESTABLE, HarvestableMobType.ORE), // T6 Ore
 
@@ -134,7 +139,8 @@ public sealed class MobInfo
         
         // T1 MOBS 20 HP (Filter)
         new(87, 4, MobType.OTHER), 
-        new(411, 4, MobType.OTHER) 
+        new(411, 4, MobType.OTHER),
+        new(441, 4, MobType.OTHER), // Normal canavar mobu
     ];
 
     public int ID { get; }
@@ -157,13 +163,7 @@ public sealed class MobInfo
         MobType = mobType;
         HarvestableMobType = harvestableMobType;
     }
-
-    public override string ToString()
-    {
-        string type = MobType == MobType.HARVESTABLE ? HarvestableMobType.ToString() : MobType.ToString();
-        return $"T{Tier} {type}";
-    }
-
+        
     public static MobInfo GetMobInfo(int mobId)
     {
         return MobsInfo.FirstOrDefault(m => m.ID == mobId);

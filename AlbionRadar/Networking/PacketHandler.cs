@@ -133,6 +133,23 @@ public sealed class PacketHandler : PhotonParser
             int mobId = Convert.ToInt32(parameters[0]);
             byte enchantmentLevel = Convert.ToByte(parameters[1]);
 
+            if (MobsHandler.Mobs.TryGetValue(mobId, out var mob) && 
+                mob.MobInfo != null && 
+                mob.MobInfo.MobType == MobType.HARVESTABLE && 
+                mob.MobInfo.HarvestableMobType == AlbionRadar.Mobs.HarvestableMobType.ORE)
+            {
+                // T4 Ore mobları için enchant seviyesi 0 olmalı
+                if (mob.MobInfo.Tier == 4)
+                {
+                    enchantmentLevel = 0;
+                }
+                // T5 Ore mobları için enchant seviyesi 2 olmalı
+                else if (mob.MobInfo.Tier == 5)
+                {
+                    enchantmentLevel = 2;
+                }
+            }
+
             MobsHandler.UpdateMobEnchantmentLevel(mobId, enchantmentLevel);
             MainForm.Log($"Mob state changed - ID: {mobId}, Enchant: {enchantmentLevel}");
         }
@@ -171,11 +188,17 @@ public sealed class PacketHandler : PhotonParser
             var mobInfo = AlbionRadar.Mobs.MobInfo.GetMobInfo(typeId);
             if (mobInfo == null)
             {
-                // MobInfo null ise bu yeni bir mob olabilir, ID ve TypeID'sini logla
-                MainForm.Log($"Unknown Mob => ID={id}, TypeID={typeId}, HP={health}");
+                MainForm.Log($"SSUnknown Mob => ID={id}, TypeID={typeId}, HP={health}");
             }
-
-            MobsHandler.AddMob(id, typeId, posX, posY, health);
+            else if (typeId == 441) // SnowRabbit - ekleme
+            {
+                MainForm.Log($"CnowRabbit detected => ID={id}, TypeID={typeId}, HP={health}");
+            }
+            else
+            {
+                MainForm.Log($"Mob Detected => ID={id}, TypeID={typeId}, HP={health}, Tier={mobInfo.Tier}, Type={mobInfo.MobType}, HarvestableType={mobInfo.HarvestableMobType}");
+                MobsHandler.AddMob(id, typeId, posX, posY, health);
+            }
         }
         catch (Exception e)
         {
