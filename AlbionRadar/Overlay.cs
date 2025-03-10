@@ -162,6 +162,9 @@ public sealed class Overlay : DirectXOverlayPlugin
             if (h.Size == 0)
                 continue;
 
+            if (!Config.Instance.Display.ShowStaticGather)
+                continue;
+
             float hX = -1 * h.PosX + lpX;
             float hY = h.PosY - lpY;
 
@@ -193,80 +196,67 @@ public sealed class Overlay : DirectXOverlayPlugin
         {
             var mob = pair.Value;
 
-            if (mob.TypeId == 442)
-                continue;
-
             float mobX = -1 * mob.PosX + lpX;
             float mobY = mob.PosY - lpY;
-
             TransformPoint(ref mobX, ref mobY);
 
             if (Math.Abs(mobX) > maxAllowedCoordinate || Math.Abs(mobY) > maxAllowedCoordinate)
                 continue;
 
-            if (mob.TypeId == 424 || mob.TypeId == 426 || mob.TypeId == 428 || (mob.MobInfo?.MobType == MobType.SKINNABLE && mob.TypeId != 420))
+            if (mob.MobInfo != null && mob.MobInfo.MobType == MobType.HARVESTABLE)
             {
+                if (!Config.Instance.Display.ShowDynamicGather)
+                    continue;
+
                 string iconName = string.Empty;
-                int tier = mob.TypeId switch
+                int tier = mob.MobInfo.Tier;
+                int enchant = mob.EnchantmentLevel;
+                
+                if (!Config.Instance.CanShowHarvestableMob(mob.MobInfo.HarvestableMobType, (byte)tier, (byte)enchant))
+                    continue;
+
+                switch (mob.MobInfo.HarvestableMobType)
                 {
-                    424 => 4,
-                    425 => 5,
-                    426 => 5,
-                    427 => 6,
-                    428 => 6,
-                    _ => mob.MobInfo?.Tier ?? 0
-                };
-                
-                iconName = $"hide_{tier}_{mob.EnchantmentLevel}";
-                DrawIcon(OverlayWindow.Graphics, iconName, new Vector2(mobX, mobY));
-                continue;
-            }
+                    case AlbionRadar.Mobs.HarvestableMobType.FIBER:
+                        iconName = $"fiber_{tier}_{enchant}";
+                        break;
+                    case AlbionRadar.Mobs.HarvestableMobType.HIDE:
+                        iconName = $"hide_{tier}_{enchant}";
+                        break;
+                    case AlbionRadar.Mobs.HarvestableMobType.WOOD:
+                        iconName = $"logs_{tier}_{enchant}";
+                        break;
+                    case AlbionRadar.Mobs.HarvestableMobType.ROCK:
+                        iconName = $"rock_{tier}_{enchant}";
+                        break;
+                    case AlbionRadar.Mobs.HarvestableMobType.ORE:
+                        iconName = $"ore_{tier}_{enchant}";
+                        break;
+                }
 
-            if (mob.TypeId == 534 || mob.TypeId == 535 || mob.TypeId == 536 || mob.TypeId == 537)
-            {
-                string iconName = string.Empty;
-                int tier = mob.TypeId switch
+                if (!string.IsNullOrEmpty(iconName))
                 {
-                    534 => 4,
-                    535 => 5,
-                    536 => 6,
-                    537 => 7,
-                    _ => 0
-                };
-
-                if (mob.MobInfo?.MobType == MobType.HARVESTABLE && 
-                    !Config.Instance.CanShowHarvestableMob(mob.MobInfo.HarvestableMobType, mob.MobInfo.Tier, mob.EnchantmentLevel))
+                    DrawIcon(OverlayWindow.Graphics, iconName, new Vector2(mobX, mobY));
                     continue;
-
-                iconName = $"ore_{tier}_{mob.EnchantmentLevel}";
-                DrawIcon(OverlayWindow.Graphics, iconName, new Vector2(mobX, mobY));
-                continue;
+                }
             }
 
-            if (mob.TypeId == 554 || mob.TypeId == 555 || mob.TypeId == 557)
-            {
-                if (mob.MobInfo?.MobType == MobType.HARVESTABLE && 
-                    !Config.Instance.CanShowHarvestableMob(mob.MobInfo.HarvestableMobType, mob.MobInfo.Tier, mob.EnchantmentLevel))
-                    continue;
-
-                string iconName = string.Empty;
-                int tier = mob.MobInfo?.Tier ?? 0;
-                
-                if (tier == 0 || mob.EnchantmentLevel == 0)
-                    continue;
-                
-                iconName = $"rock_{tier}_{mob.EnchantmentLevel}";
-                DrawIcon(OverlayWindow.Graphics, iconName, new Vector2(mobX, mobY));
+            if (mob.TypeId == 407 && mob.Health == 20)
                 continue;
-            }
 
             if (mob.TypeId == 92 || mob.TypeId == 87)
             {
+                if (!Config.Instance.Display.ShowMists)
+                    continue;
+
                 DrawFilledCircle(OverlayWindow.Graphics, new Vector2(mobX, mobY), 7, _yellowBrush);
                 string mistType = mob.TypeId == 92 ? "DUO" : "SOLO";
                 DrawText(OverlayWindow.Graphics, $"MIST {mistType} T{mob.MobInfo?.Tier ?? 0}", new Vector2(mobX, mobY), _yellowBrush);
                 continue;
             }
+
+            if (!Config.Instance.Display.ShowMobs)
+                continue;
 
             DrawFilledCircle(OverlayWindow.Graphics, new Vector2(mobX, mobY), 7, _redBrush);
         }

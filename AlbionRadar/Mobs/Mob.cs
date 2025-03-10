@@ -14,6 +14,6 @@ public sealed class Mob(int id, int typeId, float posX, float posY, int health, 
 
     public override string ToString()
     {
-        return "ID:" + ID + " TypeId: " + TypeId + " PosX: " + PosX + " PosY: " + PosY + " Health: " + Health + " Charges: " + EnchantmentLevel;
+        return $"MobData: ID={ID}, TypeID={TypeId}";
     }
 }

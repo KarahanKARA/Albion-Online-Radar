@@ -1,0 +1,6 @@
+{
+    "workbench.cloudChanges.autoResume": "off",
+    "workbench.experimental.cloudChanges.autoStore": "off",
+    "workbench.experimental.cloudChanges.partialMatches.enabled": false,
+    "workbench.settings.enableNaturalLanguageSearch": true
+}

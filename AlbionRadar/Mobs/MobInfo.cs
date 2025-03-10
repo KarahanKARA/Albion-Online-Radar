@@ -10,19 +10,31 @@ public sealed class MobInfo
     [
         // HARVESTABLE MOBS
         new(48, 3, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T3 Fiber
+        new(92, 4, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T4 Fiber
         new(1220, 4, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T4 Fiber
         new(1230, 4, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T4 Fiber
+        new(518, 4, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T4 Fiber (Monitor Lizard)
+        new(4306, 4, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T4 Fiber (Monitor Lizard)
+        new(4285, 4, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T4 Fiber (Monitor Lizard)
+        new(4385, 4, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T4 Fiber (Monitor Lizard)
+        new(4286, 4, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T4 Fiber (Monitor Lizard)
         new(49, 5, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T5 Fiber
+        new(795, 5, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T5 Fiber
+        new(790, 5, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T5 Fiber
         new(1240, 6, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T6 Fiber
         new(51, 6, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T6 Fiber
+        new(519, 6, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T6 Fiber
+        new(521, 6, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T6 Fiber Enhanced
         new(50, 7, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T7 Fiber
 
         new(52, 3, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T3 Hide
         new(1201, 4, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T4 Hide
         new(1202, 4, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T4 Hide
         new(53, 5, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T5 Hide
+        new(413, 5, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T5 Hide
         new(1203, 5, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T5 Hide
         new(55, 6, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T6 Hide
+        new(415, 6, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T6 Hide
         new(54, 7, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T7 Hide
 
         new(56, 3, MobType.HARVESTABLE, HarvestableMobType.ORE), // T3 Ore
@@ -88,7 +100,43 @@ public sealed class MobInfo
         new(44, 1, MobType.SKINNABLE),
         new(45, 1, MobType.SKINNABLE),
         new(419, 1, MobType.SKINNABLE),
-        new(420, 1, MobType.SKINNABLE)
+        new(420, 1, MobType.SKINNABLE),
+        
+        // T5-T6 Moblar
+        new(1270, 5, MobType.SKINNABLE), // T5 Giant Snake
+        new(1337, 6, MobType.SKINNABLE),  // T6 Swamp Dragon
+        
+        // Yeni Eklenen Moblar
+        new(1227, 5, MobType.SKINNABLE), // T5 Mob
+        new(1234, 5, MobType.SKINNABLE), // T5 Mob
+        new(1237, 6, MobType.SKINNABLE), // T6 Mob
+        new(1244, 6, MobType.SKINNABLE), // T6 Mob
+        new(1277, 5, MobType.SKINNABLE), // T5 Mob
+        new(1280, 5, MobType.SKINNABLE), // T5 Mob
+        new(1284, 5, MobType.SKINNABLE), // T5 Mob
+        new(1287, 6, MobType.SKINNABLE), // T6 Mob
+        new(1290, 6, MobType.SKINNABLE), // T6 Mob
+        new(1294, 6, MobType.SKINNABLE), // T6 Mob
+        new(1297, 7, MobType.SKINNABLE), // T7 Mob
+        new(1327, 6, MobType.SKINNABLE), // T6 Mob
+        new(1330, 5, MobType.SKINNABLE), // T5 Mob
+        new(1334, 5, MobType.SKINNABLE), // T5 Mob
+        new(1340, 6, MobType.SKINNABLE), // T6 Mob
+        new(1357, 7, MobType.SKINNABLE), // T7 Mob
+        new(1370, 5, MobType.SKINNABLE), // T5 Mob
+        new(1374, 5, MobType.SKINNABLE), // T5 Mob
+        new(1377, 7, MobType.SKINNABLE),  // T7 Mob
+        
+        // Yeni Eklenen Moblar (2. Grup)
+        new(1220, 4, MobType.SKINNABLE), // T4 Mob
+        new(1320, 5, MobType.SKINNABLE), // T5 Mob
+        new(1284, 5, MobType.SKINNABLE), // T5 Mob
+        new(1294, 6, MobType.SKINNABLE), // T6 Mob
+        new(752, 8, MobType.SKINNABLE),  // Özel Mob
+        
+        // Özel Moblar (Filtrelenecekler)
+        new(87, 4, MobType.OTHER),  // Mist Mob (Filtrelenecek)
+        new(411, 4, MobType.OTHER)  // Toad (Filtrelenecek)
     ];
 
     public int ID { get; }

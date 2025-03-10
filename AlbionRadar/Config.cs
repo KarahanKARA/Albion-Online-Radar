@@ -15,6 +15,7 @@ public sealed class Config
     public HarvestableSettings Hide { get; set; } = new();
     public HarvestableSettings Ore { get; set; } = new();
     public HarvestableSettings Fiber { get; set; } = new();
+    public DisplaySettings Display { get; set; } = new();
 
     static Config()
     {
@@ -75,8 +76,7 @@ public sealed class Config
         public float Size { get; set; } = 480;
         public float Scale { get; set; } = 2.0f;
         public float IconScale { get; set; } = 1.0f;
-
-        public int IconSize { get; set; } = 4;
+        public float IconSize { get; set; } = 4.0f;
     }
 
     public class HarvestableSettings
@@ -105,6 +105,14 @@ public sealed class Config
 
     }
 
+    public class DisplaySettings
+    {
+        public bool ShowMobs { get; set; } = true;
+        public bool ShowMists { get; set; } = true;
+        public bool ShowDynamicGather { get; set; } = true;
+        public bool ShowStaticGather { get; set; } = true;
+    }
+
     private static void Default()
     {
         Instance = new Config();
@@ -116,7 +124,7 @@ public sealed class Config
             Size = 480,
             Scale = 2.0f,
             IconScale = 1.0f,
-            IconSize = 4
+            IconSize = 4.0f
         };
 
         Instance.Players = new PlayerSettings
@@ -124,6 +132,14 @@ public sealed class Config
             ShowPlayers = true,
             PlaySound = false,
             EnemyGuilds = new List<string>()
+        };
+
+        Instance.Display = new DisplaySettings
+        {
+            ShowMobs = true,
+            ShowMists = true,
+            ShowDynamicGather = true,
+            ShowStaticGather = true
         };
 
         Instance.Wood = CreateDefaultHarvestableSettings();

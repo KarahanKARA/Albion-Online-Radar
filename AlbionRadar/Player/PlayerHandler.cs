@@ -130,7 +130,6 @@ namespace AlbionRadar.Player
 
             _lastLocalMovementTime = DateTime.Now;
 
-            MainForm.UpdatePlayerPos(x, y);
         }
 
 

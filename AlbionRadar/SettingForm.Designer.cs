@@ -255,6 +255,11 @@ partial class SettingForm
         nIconSize = new System.Windows.Forms.NumericUpDown();
         cbShowPlayers = new System.Windows.Forms.CheckBox();
         gbResources = new System.Windows.Forms.GroupBox();
+        groupBox2 = new System.Windows.Forms.GroupBox();
+        mobCheckbox = new System.Windows.Forms.CheckBox();
+        mistCheckbox = new System.Windows.Forms.CheckBox();
+        dynamicGatherCheckbox = new System.Windows.Forms.CheckBox();
+        staticGatherCheckbox = new System.Windows.Forms.CheckBox();
         gbOffset.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)nRadarY).BeginInit();
         ((System.ComponentModel.ISupportInitialize)nRadarX).BeginInit();
@@ -271,6 +276,7 @@ partial class SettingForm
         groupBox1.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)nIconSize).BeginInit();
         gbResources.SuspendLayout();
+        groupBox2.SuspendLayout();
         SuspendLayout();
         // 
         // gbOffset
@@ -2943,7 +2949,6 @@ partial class SettingForm
         // gbRadar
         // 
         gbRadar.Controls.Add(groupBox1);
-        gbRadar.Controls.Add(cbShowPlayers);
         gbRadar.Controls.Add(gbSize);
         gbRadar.Controls.Add(gbOffset);
         gbRadar.Location = new System.Drawing.Point(318, 9);
@@ -2969,21 +2974,21 @@ partial class SettingForm
         // 
         // nIconSize
         // 
-        nIconSize.Increment = new decimal(new int[] { 4, 0, 0, 0 });
-        nIconSize.Location = new System.Drawing.Point(5, 21);
-        nIconSize.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+        nIconSize.Increment = new decimal(new int[] { 2, 0, 0, 0 });
+        nIconSize.Location = new System.Drawing.Point(6, 20);
         nIconSize.Maximum = new decimal(new int[] { 12, 0, 0, 0 });
         nIconSize.Minimum = new decimal(new int[] { 4, 0, 0, 0 });
         nIconSize.Name = "nIconSize";
         nIconSize.Size = new System.Drawing.Size(70, 23);
         nIconSize.TabIndex = 0;
-        nIconSize.Value = new decimal(new int[] { 8, 0, 0, 0 });
+        nIconSize.Value = new decimal(new int[] { 4, 0, 0, 0 });
         nIconSize.ValueChanged += nIconSize_ValueChanged;
         // 
         // cbShowPlayers
         // 
         cbShowPlayers.AutoSize = true;
-        cbShowPlayers.Location = new System.Drawing.Point(10, 189);
+        cbShowPlayers.Enabled = false;
+        cbShowPlayers.Location = new System.Drawing.Point(6, 112);
         cbShowPlayers.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
         cbShowPlayers.Name = "cbShowPlayers";
         cbShowPlayers.Size = new System.Drawing.Size(95, 19);
@@ -3004,11 +3009,80 @@ partial class SettingForm
         gbResources.TabStop = false;
         gbResources.Text = "Resources";
         // 
+        // groupBox2
+        // 
+        groupBox2.Controls.Add(mobCheckbox);
+        groupBox2.Controls.Add(cbShowPlayers);
+        groupBox2.Controls.Add(mistCheckbox);
+        groupBox2.Controls.Add(dynamicGatherCheckbox);
+        groupBox2.Controls.Add(staticGatherCheckbox);
+        groupBox2.Location = new System.Drawing.Point(493, 11);
+        groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+        groupBox2.Name = "groupBox2";
+        groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+        groupBox2.Size = new System.Drawing.Size(263, 218);
+        groupBox2.TabIndex = 4;
+        groupBox2.TabStop = false;
+        groupBox2.Text = "Display";
+        // 
+        // mobCheckbox
+        // 
+        mobCheckbox.AutoSize = true;
+        mobCheckbox.Checked = true;
+        mobCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+        mobCheckbox.Location = new System.Drawing.Point(6, 89);
+        mobCheckbox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+        mobCheckbox.Name = "mobCheckbox";
+        mobCheckbox.Size = new System.Drawing.Size(88, 19);
+        mobCheckbox.TabIndex = 3;
+        mobCheckbox.Text = "Show Mobs";
+        mobCheckbox.UseVisualStyleBackColor = true;
+        // 
+        // mistCheckbox
+        // 
+        mistCheckbox.AutoSize = true;
+        mistCheckbox.Checked = true;
+        mistCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+        mistCheckbox.Location = new System.Drawing.Point(6, 66);
+        mistCheckbox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+        mistCheckbox.Name = "mistCheckbox";
+        mistCheckbox.Size = new System.Drawing.Size(86, 19);
+        mistCheckbox.TabIndex = 2;
+        mistCheckbox.Text = "Show Mists";
+        mistCheckbox.UseVisualStyleBackColor = true;
+        // 
+        // dynamicGatherCheckbox
+        // 
+        dynamicGatherCheckbox.AutoSize = true;
+        dynamicGatherCheckbox.Checked = true;
+        dynamicGatherCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+        dynamicGatherCheckbox.Location = new System.Drawing.Point(6, 43);
+        dynamicGatherCheckbox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+        dynamicGatherCheckbox.Name = "dynamicGatherCheckbox";
+        dynamicGatherCheckbox.Size = new System.Drawing.Size(220, 19);
+        dynamicGatherCheckbox.TabIndex = 1;
+        dynamicGatherCheckbox.Text = "Show Dynamic Gather Points (Mobs)";
+        dynamicGatherCheckbox.UseVisualStyleBackColor = true;
+        // 
+        // staticGatherCheckbox
+        // 
+        staticGatherCheckbox.AutoSize = true;
+        staticGatherCheckbox.Checked = true;
+        staticGatherCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+        staticGatherCheckbox.Location = new System.Drawing.Point(6, 20);
+        staticGatherCheckbox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+        staticGatherCheckbox.Name = "staticGatherCheckbox";
+        staticGatherCheckbox.Size = new System.Drawing.Size(161, 19);
+        staticGatherCheckbox.TabIndex = 0;
+        staticGatherCheckbox.Text = "Show Static Gather Points";
+        staticGatherCheckbox.UseVisualStyleBackColor = true;
+        // 
         // SettingForm
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        ClientSize = new System.Drawing.Size(496, 238);
+        ClientSize = new System.Drawing.Size(768, 322);
+        Controls.Add(groupBox2);
         Controls.Add(gbResources);
         Controls.Add(gbRadar);
         FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -3039,10 +3113,11 @@ partial class SettingForm
         tabPage5.ResumeLayout(false);
         tabPage5.PerformLayout();
         gbRadar.ResumeLayout(false);
-        gbRadar.PerformLayout();
         groupBox1.ResumeLayout(false);
         ((System.ComponentModel.ISupportInitialize)nIconSize).EndInit();
         gbResources.ResumeLayout(false);
+        groupBox2.ResumeLayout(false);
+        groupBox2.PerformLayout();
         ResumeLayout(false);
     }
 
@@ -3274,4 +3349,9 @@ partial class SettingForm
     private System.Windows.Forms.CheckBox cbShowPlayers;
     private System.Windows.Forms.GroupBox groupBox1;
     public System.Windows.Forms.NumericUpDown nIconSize;
+    private System.Windows.Forms.GroupBox groupBox2;
+    private System.Windows.Forms.CheckBox mobCheckbox;
+    private System.Windows.Forms.CheckBox mistCheckbox;
+    private System.Windows.Forms.CheckBox dynamicGatherCheckbox;
+    private System.Windows.Forms.CheckBox staticGatherCheckbox;
 }

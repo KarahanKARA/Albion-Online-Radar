@@ -10,12 +10,25 @@ public partial class SettingForm : Form
 {
     private bool CanChangeSettings;
     private DarkModeCS DM;
+    private System.Windows.Forms.Timer iconSizeTimer;
+    private decimal lastIconSize;
 
     public SettingForm()
     {
         InitializeComponent();
         DM = new DarkModeCS(this);
         this.FormClosing += SettingForm_FormClosing;
+
+        // Timer'ı ayarla
+        iconSizeTimer = new System.Windows.Forms.Timer();
+        iconSizeTimer.Interval = 250; // 250ms bekle
+        iconSizeTimer.Tick += IconSizeTimer_Tick;
+
+        // Yeni checkbox'lar için click event'lerini ekle
+        mobCheckbox.Click += CheckBox_Click;
+        mistCheckbox.Click += CheckBox_Click;
+        dynamicGatherCheckbox.Click += CheckBox_Click;
+        staticGatherCheckbox.Click += CheckBox_Click;
     }
 
     private void SettingForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -32,9 +45,12 @@ public partial class SettingForm : Form
         nRadarY.Value = (decimal)config.RadarParams.YOffset;
         nRadarSize.Value = (decimal)config.RadarParams.Size;
         nRadarScale.Value = (decimal)config.RadarParams.Scale;
-        nIconSize.Value = (int)config.RadarParams.IconSize;
+        nIconSize.Value = (decimal)config.RadarParams.IconSize;
 
-        cbShowPlayers.Checked = config.Players.ShowPlayers;
+        mobCheckbox.Checked = config.Display.ShowMobs;
+        mistCheckbox.Checked = config.Display.ShowMists;
+        dynamicGatherCheckbox.Checked = config.Display.ShowDynamicGather;
+        staticGatherCheckbox.Checked = config.Display.ShowStaticGather;
 
         // Wood
         for (int i = 0; i < config.Wood.Tier.Length; ++i)
@@ -164,6 +180,27 @@ public partial class SettingForm : Form
         CanChangeSettings = true;
     }
 
+    private void CheckBox_Click(object sender, EventArgs e)
+    {
+        if (!CanChangeSettings)
+            return;
+
+        var config = Config.Instance;
+        if (sender is CheckBox cb)
+        {
+            if (cb == mobCheckbox)
+                config.Display.ShowMobs = cb.Checked;
+            else if (cb == mistCheckbox)
+                config.Display.ShowMists = cb.Checked;
+            else if (cb == dynamicGatherCheckbox)
+                config.Display.ShowDynamicGather = cb.Checked;
+            else if (cb == staticGatherCheckbox)
+                config.Display.ShowStaticGather = cb.Checked;
+
+            Config.Save();
+        }
+    }
+
     private void PropertyChanged(object sender, EventArgs e)
     {
         UpdateSettings();
@@ -180,8 +217,11 @@ public partial class SettingForm : Form
         config.RadarParams.YOffset = (float)nRadarY.Value;
         config.RadarParams.Size = (float)nRadarSize.Value;
         config.RadarParams.Scale = (float)nRadarScale.Value;
-        config.RadarParams.IconSize = (int)nIconSize.Value;
-        config.Players.ShowPlayers = cbShowPlayers.Checked;
+        config.RadarParams.IconSize = (float)nIconSize.Value;
+        config.Display.ShowMobs = mobCheckbox.Checked;
+        config.Display.ShowMists = mistCheckbox.Checked;
+        config.Display.ShowDynamicGather = dynamicGatherCheckbox.Checked;
+        config.Display.ShowStaticGather = staticGatherCheckbox.Checked;
 
         // Wood
         for (int i = 0; i < config.Wood.Tier.Length; ++i)
@@ -296,24 +336,37 @@ public partial class SettingForm : Form
         Config.Save();
     }
 
+    private void IconSizeTimer_Tick(object sender, EventArgs e)
+    {
+        iconSizeTimer.Stop();
+        try
+        {
+            if (!CanChangeSettings)
+                return;
+
+            var config = Config.Instance;
+            if (lastIconSize != nIconSize.Value)
+            {
+                lastIconSize = nIconSize.Value;
+                config.RadarParams.IconSize = (float)nIconSize.Value;
+                Config.Save();
+                ImageHandler.Reload();
+            }
+        }
+        catch (Exception ex)
+        {
+            MainForm.Log($"Error updating icon size: {ex.Message}");
+        }
+    }
+
     private void nIconSize_ValueChanged(object sender, EventArgs e)
     {
         if (!CanChangeSettings)
             return;
-        try
-        {
-            int oldIconSize = Config.Instance.RadarParams.IconSize;
 
-            UpdateSettings();
-
-            if (oldIconSize != Config.Instance.RadarParams.IconSize)
-            {
-                ImageHandler.Reload();
-            }
-        }
-        catch (Exception)
-        {
-        }
+        // Timer'ı yeniden başlat
+        iconSizeTimer.Stop();
+        iconSizeTimer.Start();
     }
 
     private void btnResetConfig_Click(object sender, EventArgs e)

@@ -116,33 +116,9 @@ public partial class MainForm : Form
         {
             void write()
             {
-                // Yeni mob verisi ise sadece ID ve TypeID'yi göster
-                if (message.Contains("New Mob:"))
-                {
-                    var lines = message.Split('\n');
-                    string id = "", typeId = "";
-                    
-                    foreach (var line in lines)
-                    {
-                        if (line.Contains("Key = 0,"))
-                            id = line.Split(',')[1].Split('=')[1].Trim();
-                        else if (line.Contains("Key = 1,"))
-                            typeId = line.Split(',')[1].Split('=')[1].Trim();
-                    }
-                    
-                    if (!string.IsNullOrEmpty(id) && !string.IsNullOrEmpty(typeId))
-                    {
-                        string formattedMessage = $"Mob: ID={id}, TypeID={typeId}";
-                        _mainForm.rbLog.AppendText(formattedMessage + Environment.NewLine);
-                    }
-                }
-                // Kritik sistem mesajları için timestamp ekle
-                else if (message.Contains("Error") || message.Contains("Starting") || message.Contains("Initialization"))
-                {
-                    string timestamp = DateTime.Now.ToString("HH:mm:ss");
-                    string formattedMessage = $"[{timestamp}] {message}";
-                    _mainForm.rbLog.AppendText(formattedMessage + Environment.NewLine);
-                }
+                string timestamp = DateTime.Now.ToString("HH:mm:ss");
+                string formattedMessage = $"[{timestamp}] {message}";
+                _mainForm.rbLog.AppendText(formattedMessage + Environment.NewLine);
                 _mainForm.rbLog.ScrollToCaret();
             }
 
@@ -164,7 +140,7 @@ public partial class MainForm : Form
             lock (LogFileLock)
             {
                 // Sadece hata ve kritik sistem mesajlarını dosyaya yaz
-                if (message.Contains("Error") || message.Contains("Exception") || 
+                if (message.Contains("Error") || message.Contains("Exception") ||
                     message.Contains("Starting") || message.Contains("Initialization"))
                 {
                     string logFile = "radar_logs.txt";
@@ -179,32 +155,6 @@ public partial class MainForm : Form
         }
     }
 
-    public static void UpdatePlayerPos(float x, float y)
-    {
-        void update()
-        {
-            _mainForm.lPlayerPos.Text = $@"{x} {y}";
-        }
-
-        if (_mainForm.lPlayerPos.InvokeRequired)
-            _mainForm.lPlayerPos.Invoke(update);
-        else
-            update();
-    }
-
-    public static void SetMapID(string mapID)
-    {
-        void update()
-        {
-            _mainForm.lMapID.Text = mapID;
-            _mainForm.lMapID.ForeColor = Color.Green;
-        }
-
-        if (_mainForm.lMapID.InvokeRequired)
-            _mainForm.lMapID.Invoke(update);
-        else
-            update();
-    }
 
     private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
     {

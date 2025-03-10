@@ -168,6 +168,13 @@ public sealed class PacketHandler : PhotonParser
             float posY = loc[1];
             int health = parameters.TryGetValue(13, out object healthObj) ? Convert.ToInt32(healthObj) : 0;
 
+            var mobInfo = AlbionRadar.Mobs.MobInfo.GetMobInfo(typeId);
+            if (mobInfo == null)
+            {
+                // MobInfo null ise bu yeni bir mob olabilir, ID ve TypeID'sini logla
+                MainForm.Log($"Unknown Mob => ID={id}, TypeID={typeId}");
+            }
+
             MobsHandler.AddMob(id, typeId, posX, posY, health);
         }
         catch (Exception e)
@@ -385,7 +392,6 @@ public sealed class PacketHandler : PhotonParser
 
         if (string.IsNullOrEmpty(mapStr))
         {
-            MainForm.Log($"Can't parse mapID: {mapStr}");
             return;
         }
 
@@ -399,12 +405,20 @@ public sealed class PacketHandler : PhotonParser
 
         if (parameters.TryGetValue(249, out var playerIdObj))
         {
-            LocalPlayerId = Convert.ToInt32(playerIdObj);
-            MainForm.Log($"Yerel oyuncu ID: {LocalPlayerId}");
+            try 
+            {
+                int localPlayerId = Convert.ToInt32(playerIdObj);
+                PlayerHandler.LocalPlayerId = localPlayerId;
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        else 
+        {
         }
 
         PlayerHandler.MapID = mapStr;
         PlayerHandler.ZoneType = zoneType;
-        MainForm.Log($"Zone tipi: {zoneType}");
     }
 }
