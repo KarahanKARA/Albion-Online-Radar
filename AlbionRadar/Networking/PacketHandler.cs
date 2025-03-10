@@ -172,7 +172,7 @@ public sealed class PacketHandler : PhotonParser
             if (mobInfo == null)
             {
                 // MobInfo null ise bu yeni bir mob olabilir, ID ve TypeID'sini logla
-                MainForm.Log($"Unknown Mob => ID={id}, TypeID={typeId}");
+                MainForm.Log($"Unknown Mob => ID={id}, TypeID={typeId}, HP={health}");
             }
 
             MobsHandler.AddMob(id, typeId, posX, posY, health);

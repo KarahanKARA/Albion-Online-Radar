@@ -21,7 +21,8 @@ public sealed class MobInfo
         new(49, 5, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T5 Fiber
         new(795, 5, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T5 Fiber
         new(790, 5, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T5 Fiber
-        new(1240, 6, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T6 Fiber
+        new(1240, 5, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T5 Fiber
+        new(89885, 5, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T5 Fiber
         new(51, 6, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T6 Fiber
         new(519, 6, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T6 Fiber
         new(521, 6, MobType.HARVESTABLE, HarvestableMobType.FIBER), // T6 Fiber Enhanced
@@ -30,6 +31,7 @@ public sealed class MobInfo
         new(52, 3, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T3 Hide
         new(1201, 4, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T4 Hide
         new(1202, 4, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T4 Hide
+        new(1347, 4, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T4-1 Hide
         new(53, 5, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T5 Hide
         new(413, 5, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T5 Hide
         new(1203, 5, MobType.HARVESTABLE, HarvestableMobType.HIDE), // T5 Hide
@@ -58,7 +60,6 @@ public sealed class MobInfo
         new(72, 7, MobType.HARVESTABLE, HarvestableMobType.ROCK), // T7 Rock
         new(73, 6, MobType.HARVESTABLE, HarvestableMobType.ROCK), // T6 Rock
 
-        // Yeni Harvestable Moblar
         new(554, 4, MobType.HARVESTABLE, HarvestableMobType.ROCK), // T4 Rock Mob
         new(557, 4, MobType.HARVESTABLE, HarvestableMobType.ROCK), // T4 Rock Mob
 
@@ -102,11 +103,9 @@ public sealed class MobInfo
         new(419, 1, MobType.SKINNABLE),
         new(420, 1, MobType.SKINNABLE),
         
-        // T5-T6 Moblar
         new(1270, 5, MobType.SKINNABLE), // T5 Giant Snake
         new(1337, 6, MobType.SKINNABLE),  // T6 Swamp Dragon
         
-        // Yeni Eklenen Moblar
         new(1227, 5, MobType.SKINNABLE), // T5 Mob
         new(1234, 5, MobType.SKINNABLE), // T5 Mob
         new(1237, 6, MobType.SKINNABLE), // T6 Mob
@@ -127,16 +126,15 @@ public sealed class MobInfo
         new(1374, 5, MobType.SKINNABLE), // T5 Mob
         new(1377, 7, MobType.SKINNABLE),  // T7 Mob
         
-        // Yeni Eklenen Moblar (2. Grup)
         new(1220, 4, MobType.SKINNABLE), // T4 Mob
         new(1320, 5, MobType.SKINNABLE), // T5 Mob
         new(1284, 5, MobType.SKINNABLE), // T5 Mob
         new(1294, 6, MobType.SKINNABLE), // T6 Mob
-        new(752, 8, MobType.SKINNABLE),  // Özel Mob
+        new(752, 8, MobType.SKINNABLE),  
         
-        // Özel Moblar (Filtrelenecekler)
-        new(87, 4, MobType.OTHER),  // Mist Mob (Filtrelenecek)
-        new(411, 4, MobType.OTHER)  // Toad (Filtrelenecek)
+        // T1 MOBS 20 HP (Filter)
+        new(87, 4, MobType.OTHER), 
+        new(411, 4, MobType.OTHER) 
     ];
 
     public int ID { get; }
@@ -162,7 +160,8 @@ public sealed class MobInfo
 
     public override string ToString()
     {
-        return "ID: " + ID + " Tier: " + Tier + " MobType: " + MobType;
+        string type = MobType == MobType.HARVESTABLE ? HarvestableMobType.ToString() : MobType.ToString();
+        return $"T{Tier} {type}";
     }
 
     public static MobInfo GetMobInfo(int mobId)

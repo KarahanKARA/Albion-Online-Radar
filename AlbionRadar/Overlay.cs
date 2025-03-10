@@ -237,6 +237,18 @@ public sealed class Overlay : DirectXOverlayPlugin
                 if (!string.IsNullOrEmpty(iconName))
                 {
                     DrawIcon(OverlayWindow.Graphics, iconName, new Vector2(mobX, mobY));
+                    if (mob.Health > 0)
+                    {
+                        string hpText = $"HP: {mob.Health}";
+                        int fontId = OverlayWindow.Graphics.CreateFont("Arial", 12);
+                        OverlayWindow.Graphics.DrawText(
+                            hpText,
+                            fontId,
+                            _textBrush,
+                            (int)(mobX - 15),
+                            (int)(mobY + 15)
+                        );
+                    }
                     continue;
                 }
             }
